@@ -37,6 +37,23 @@ Or trigger naturally:
 | **VP Engineering** | Technical debt, anti-patterns, architecture conflicts, regressions |
 | **VP Design** | UX consistency, accessibility, design system alignment |
 
+## What's Checked
+
+VP Engineering applies these rules in addition to the general review:
+
+| Rule | Check |
+|------|-------|
+| P-1, P-2 | Surface grounding: hardcoded URLs, RPC names, CLI commands, env vars, and columns name a canonical source; new conventions are grep-confirmed |
+| P-3 | PL/pgSQL safety: name-collision audit for `RETURNS TABLE` functions (unqualified `RETURNING` is Critical) |
+| P-4 | Smoke vs CI: pre-ship verification is distinguished from a post-ship smoke path |
+| P-5 | Shared-state / coordination audit: producers, consumers, invariant, and test; the reviewer auto-populates a missing matrix |
+| P-6 | Observation and gate correctness in verification code (baseline-after-await, silence-as-success, asymmetric windows, stated worst case, gate the outcome) |
+| P-7 | State-flip assertion audit: stale assertions about the old state, found with `scripts/scan-state-flip.sh` |
+| P-8 | Negative pass criteria need both arms (show a violation could have been observed) |
+| P-9 | Wave sizing reflects the residue left by earlier waves, not the original population |
+
+It also flags plans that make a genuine architecture decision with no ADR discussion.
+
 ## Issue Severity Guide
 
 | Severity | Action |
@@ -48,10 +65,14 @@ Or trigger naturally:
 
 ## Installation
 
-Via Skillsmith MCP:
+```bash
+skillsmith install wrsmith108/plan-review-skill
+```
+
+Or via the Skillsmith MCP server:
 
 ```
-install_skill smith-horn/plan-review-skill
+install_skill wrsmith108/plan-review-skill
 ```
 
 Or manually copy this directory to `~/.claude/skills/plan-review-skill/`.
@@ -69,11 +90,10 @@ Custom VP prompts via `.claude/plan-review-config.json` in your project root.
 
 ## Integration
 
-Works with other Claude Code skills:
+Works with other Claude Code skills, if installed:
 
 | Skill | Integration |
 |-------|-------------|
 | `wave-planner` | Review wave plans before execution |
 | `launchpad` | Integrated as Stage 2 of the end-to-end pipeline |
 | `governance` | Standards audit runs after plan approval |
-| `hive-mind-execution` | Review phase integrates plan-review |
