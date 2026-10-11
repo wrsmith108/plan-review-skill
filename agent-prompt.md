@@ -490,7 +490,7 @@ Override default VP prompts in `.claude/plan-review-config.json`:
 | # | VP | Severity | Category | Issue (<240 chars) |
 |---|----|---------|---------|--------------------|
 | 1 | Eng | Critical | Security | Token refresh endpoint lacks rate limiting, enabling potential abuse |
-| 2 | Product | Critical | Blocker | User service v2.1 dependency not deployed, blocks auth flow testing |
+| 2 | Product | Critical | Blocker | `<dependency_service>` `<required_version>` not deployed, blocks auth flow testing |
 | 3 | Eng | High | Anti-pattern | JWT secret stored in code, should use env var with rotation |
 | 4 | Design | High | Pattern | Login error states don't match error message design system |
 | 5 | Product | Medium | Scope | Password reset flow mentioned but not specified |
